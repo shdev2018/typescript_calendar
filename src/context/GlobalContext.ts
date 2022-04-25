@@ -1,43 +1,54 @@
 import dayjs from 'dayjs';
-import React from 'react'
+import React from 'react';
 import { CalendarEvent } from '../utils';
 
-interface GlobalContext {
-  monthIndex: number;
-  setMonthIndex: (index: any) => void;
-  smallCalendarMonth: number;
-  setSmallCalendarMonth: (index: any) => void;
-  daySelected: dayjs.Dayjs | null;
-  setDaySelected: (day: any) => void;
-  showEventModal: boolean;
-  setShowEventModal: (show: boolean) => void;
-  dispatchCalEvent: ({type, payload}: any) => void;
-  savedEvents: Array<CalendarEvent>;
-  selectedEvent: CalendarEvent | null;
-  setSelectedEvent: (event: CalendarEvent) => void;
-  labels: Array<any>;
-  setLabels: (lbls: any) => void;
-  updateLabel: (lbl: any) => void;
-  filteredEvents: Array<any>
+export interface DispatchCalenderEvent {
+    type: string;
+    payload: CalendarEvent;
+}
+export interface LabelStatus {
+    label: string;
+    checked: boolean;
 }
 
-const GlobalContext= React.createContext<GlobalContext>({
-  monthIndex: 0,
-  setMonthIndex: (index: any) => {},
-  smallCalendarMonth: 0,
-  setSmallCalendarMonth: (index: number) => {},
-  daySelected: null,
-  setDaySelected: (day: any) => {},
-  showEventModal: false,
-  setShowEventModal: (show: boolean) => {},
-  dispatchCalEvent: ({type, payload}) => {},
-  savedEvents: [],
-  selectedEvent: null,
-  setSelectedEvent: (event: CalendarEvent) => {},
-  labels: [],
-  setLabels: (lbls: any) => {},
-  updateLabel: (lbl: any) => {},
-  filteredEvents: []
+interface GlobalContext {
+    monthIndex: number;
+    setMonthIndex: (index: number) => void;
+    smallCalendarMonth: number | null;
+    setSmallCalendarMonth: React.Dispatch<React.SetStateAction<number | null>>;
+    daySelected: dayjs.Dayjs | null;
+    setDaySelected: React.Dispatch<React.SetStateAction<dayjs.Dayjs | null>>;
+    showEventModal: boolean;
+    setShowEventModal: React.Dispatch<React.SetStateAction<boolean>>;
+    dispatchCalEvent: (obj: DispatchCalenderEvent) => void;
+    savedEvents: Array<CalendarEvent>;
+    selectedEvent: CalendarEvent | null;
+    setSelectedEvent: React.Dispatch<
+        React.SetStateAction<CalendarEvent | null>
+    >;
+    labels: LabelStatus[];
+    setLabels: React.Dispatch<React.SetStateAction<LabelStatus[]>>;
+    updateLabel: (obj: LabelStatus) => void;
+    filteredEvents: CalendarEvent[];
+}
+
+const GlobalContext = React.createContext<GlobalContext>({
+    monthIndex: 0,
+    setMonthIndex: (index: number) => {},
+    smallCalendarMonth: 0,
+    setSmallCalendarMonth: () => {},
+    daySelected: null,
+    setDaySelected: () => {},
+    showEventModal: false,
+    setShowEventModal: () => {},
+    dispatchCalEvent: ({ type, payload }) => {},
+    savedEvents: [],
+    selectedEvent: null,
+    setSelectedEvent: () => {},
+    labels: [],
+    setLabels: () => {},
+    updateLabel: (obj: LabelStatus) => {},
+    filteredEvents: [],
 });
 
 export default GlobalContext;
