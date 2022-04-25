@@ -1,3 +1,5 @@
+# Typescript version of 3stbn's google clone calendar at https://github.com/3stbn/google-calendar-clone
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
