@@ -2,6 +2,7 @@ import dayjs from 'dayjs';
 import React, { useContext, useState, useEffect } from 'react';
 import GlobalContext from '../context/GlobalContext';
 import { CalendarEvent } from '../utils';
+import { Guid } from 'guid-factory';
 
 interface DayProps {
     day: dayjs.Dayjs;
@@ -53,7 +54,7 @@ const Day: React.FC<DayProps> = ({ day, rowIdx }) => {
             >
                 {dayEvents.map((evt: CalendarEvent, idx: number) => (
                     <div
-                        key={`day-dayevent-{idx}`}
+                        key={Guid.newGuid().toString()}
                         onClick={() => setSelectedEvent(evt)}
                         className={`bg-${evt.label}-200 p-1 mr-3 text-gray-600 text-small rounded mb-1 truncate`}
                     >

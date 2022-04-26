@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react';
 import GlobalContext from '../context/GlobalContext';
 import { CalendarEvent } from '../utils';
+import { Guid } from 'guid-factory';
 
 const labelsClasses = ['indigo', 'gray', 'green', 'blue', 'red', 'purple'];
 
@@ -100,7 +101,7 @@ const EventModal: React.FC = () => {
                         <div className="flex gap-x-2">
                             {labelsClasses.map((lblClass, i) => (
                                 <span
-                                    key= {`eventmodal-labels-${lblClass}-${i}`}
+                                    key= {Guid.newGuid().toString()}
                                     onClick={() => setSelectedLabel(lblClass)}
                                     className={`bg-${lblClass}-500 w-6 h-6 rounded-full flex 
                     items-center justify-center cursor-pointer`}

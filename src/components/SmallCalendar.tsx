@@ -2,6 +2,7 @@ import dayjs from 'dayjs';
 import React, { useState, useEffect, useContext } from 'react';
 import GlobalContext from '../context/GlobalContext';
 import { getMonth } from '../utils';
+import { Guid } from 'guid-factory';
 
 const SmallCalendar: React.FC = () => {
     const { monthIndex, setSmallCalendarMonth, setDaySelected, daySelected } =
@@ -66,10 +67,10 @@ const SmallCalendar: React.FC = () => {
                         </span>
                     ))}
                 {currentMonth.map((row, i) => (
-                    <React.Fragment key={`smallcalendar-currentMonth-r-${i}`}>
+                    <React.Fragment key={Guid.newGuid().toString()}>
                         {row.map((day, i) => (
                             <button
-                                key={`smallcalendar-currentMonth-r-btn-${i}`}
+                                key={Guid.newGuid().toString()}
                                 className={`py-1 w-full ${getDayClass(day)}`}
                                 onClick={() => {
                                     setSmallCalendarMonth(currentMonthIdx);
