@@ -1,33 +1,37 @@
 import dayjs from 'dayjs';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { getMonth } from '../utils';
 import { Guid } from 'guid-factory';
 import { Atom, swap, useAtom } from '@dbeining/react-atom';
 import { MonthIndexAtom } from '../atoms/MonthIndexAtom';
 import { updateSmallCalendarMonthAtom } from '../atoms/SmallCalendarMonthAtom';
-import { DaySelectedAtom, updateDaySelectedAtom } from '../atoms/DaySelectedAtom';
+import {
+    DaySelectedAtom,
+    updateDaySelectedAtom,
+} from '../atoms/DaySelectedAtom';
 
 const SmallCalendar: React.FC = () => {
     const daySelected = useAtom(DaySelectedAtom);
 
     const monthIndex = useAtom(MonthIndexAtom);
 
-    const CurrentMonthIdxAtom = Atom.of<number>(dayjs().month());
+    // const CurrentMonthIdxAtom = Atom.of<number>(dayjs().month());
+
+    const [currentMonthIdx, setCurrentMonthIdx] = useState(dayjs().month());
+
     function updateCurrentMonthIdxAtom(idx: number) {
-        swap(CurrentMonthIdxAtom, (prev) =>
-            prev = idx
-        );
+        setCurrentMonthIdx(idx);
     }
-    const currentMonthIdx = useAtom(CurrentMonthIdxAtom);
+    //const currentMonthIdx = useAtom(CurrentMonthIdxAtom);
 
-    const CurrentMonthAtom = Atom.of<dayjs.Dayjs[][]>(getMonth());
+    //const CurrentMonthAtom = Atom.of<dayjs.Dayjs[][]>(getMonth());
+
+    const [currentMonth, setCurrentMonth] = useState(getMonth());
+
     function updateCurrentMonthAtom(month: dayjs.Dayjs[][]) {
-        swap(CurrentMonthAtom, (prev) =>
-            prev = month
-        );
+        setCurrentMonth(month);
     }
-    const currentMonth = useAtom(CurrentMonthAtom);
-
+    //const currentMonth = useAtom(CurrentMonthAtom);
 
     useEffect(() => {
         updateCurrentMonthIdxAtom(monthIndex);
@@ -54,8 +58,8 @@ const SmallCalendar: React.FC = () => {
             return 'bg-blue-100 rounded-full text-blue-600 font-bold';
         else return '';
     }
-    
-    console.log("Small calendar rendered");
+
+    console.log('Small calendar rendered');
     return (
         <div className="mt-9">
             <header className="flex justify-between">
@@ -94,7 +98,9 @@ const SmallCalendar: React.FC = () => {
                                 key={Guid.newGuid()}
                                 className={`py-1 w-full ${getDayClass(day)}`}
                                 onClick={() => {
-                                    updateSmallCalendarMonthAtom(currentMonthIdx);
+                                    updateSmallCalendarMonthAtom(
+                                        currentMonthIdx
+                                    );
                                     updateDaySelectedAtom(day);
                                 }}
                             >

@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { CalendarEvent } from '../utils';
 import { Guid } from 'guid-factory';
 import { Atom, swap, useAtom } from '@dbeining/react-atom';
@@ -18,13 +18,13 @@ const Day: React.FC<DayProps> = ({ day, rowIdx }) => {
     //const savedEvents = useAtom(SavedEventsAtom);
     const filteredEvents = useAtom(FilteredEventsAtom);
 
-    const DayEventsAtom = Atom.of<CalendarEvent[]>([]);
+    //const DayEventsAtom = Atom.of<CalendarEvent[]>([]);
+    const [dayEvents, setDayEvents] = useState<CalendarEvent[]>([]);
+
     function updateDayEventsAtom(events: CalendarEvent[]) {
-        swap(DayEventsAtom, (prev) =>
-            prev = events
-        );
+        setDayEvents(events);
     }
-    const dayEvents = useAtom(DayEventsAtom);
+    //const dayEvents = useAtom(DayEventsAtom);
 
     useEffect(() => {
         const events = filteredEvents.filter(

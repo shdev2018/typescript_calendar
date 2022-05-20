@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { CalendarEvent } from '../utils';
 import { Guid } from 'guid-factory';
 import { dispatchCalenderEventAtom } from '../atoms/SavedEventsAtom';
-import { ShowEventModalAtom, updateShowEventModalAtom } from '../atoms/ShowEventModalAtom';
+import {
+    ShowEventModalAtom,
+    updateShowEventModalAtom,
+} from '../atoms/ShowEventModalAtom';
 import { Atom, swap, useAtom } from '@dbeining/react-atom';
 import { SelectedEventAtom } from '../atoms/SelectedEventAtom';
 import { DaySelectedAtom } from '../atoms/DaySelectedAtom';
@@ -15,34 +18,45 @@ const EventModal: React.FC = () => {
     const selectedEvent = useAtom(SelectedEventAtom);
     const daySelected = useAtom(DaySelectedAtom);
 
-    const TitleAtom = Atom.of(selectedEvent ? selectedEvent.title : '');
+    // const TitleAtom = Atom.of(selectedEvent ? selectedEvent.title : '');
+
+    const [title, setTitle] = useState(
+        selectedEvent ? selectedEvent.title : ''
+    );
+
+    const [description, setDescription] = useState(
+        selectedEvent ? selectedEvent.description : ''
+    );
+    //
     function updateTitleAtom(title: string) {
-        swap(TitleAtom, (prev) =>
-            prev = title
-        );
+        setTitle(title);
     }
-    const title = useAtom(TitleAtom);
-
-    const DescriptionAtom = Atom.of(selectedEvent ? selectedEvent.description : '');
     function updateDescriptionAtom(description: string) {
-        swap(DescriptionAtom, (prev) =>
-            prev = description
-        );
+        setDescription(description);
     }
-    const description = useAtom(DescriptionAtom);
+    // const title = useAtom(TitleAtom);
+    //
+    // const DescriptionAtom = Atom.of(
+    //     selectedEvent ? selectedEvent.description : ''
+    // );
+    // function updateDescriptionAtom(description: string) {
+    //     swap(DescriptionAtom, () => description);
+    // }
+    // const description = useAtom(DescriptionAtom);
 
-
-    const SelectedLabelAtom = Atom.of(
+    // const SelectedLabelAtom = Atom.of(
+    //     selectedEvent
+    //         ? labelsClasses.find((lbl) => lbl === selectedEvent.label)
+    //         : labelsClasses[0]
+    // );
+    const [selectedLabel, setSelectedLabel] = useState(
         selectedEvent
             ? labelsClasses.find((lbl) => lbl === selectedEvent.label)
             : labelsClasses[0]
     );
     function updateSelectedLabelAtom(description: string) {
-        swap(SelectedLabelAtom, (prev) =>
-            prev = description
-        );
+        setSelectedLabel(description);
     }
-    const selectedLabel = useAtom(SelectedLabelAtom);
 
     const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
@@ -64,10 +78,10 @@ const EventModal: React.FC = () => {
         updateShowEventModalAtom(false);
     };
 
-    console.log("Event modal rendered");
+    console.log('Event modal rendered');
     return (
         <>
-            {showEventModal && 
+            {showEventModal && (
                 <div className="h-screen w-full fixed left-0 top-0 flex justify-center items-center">
                     <form className="bg-white rounded-lg shadow-2xl w-1/4">
                         <header className="bg-gray-100 px-4 py-2 flex justify-between items-center">
@@ -89,7 +103,11 @@ const EventModal: React.FC = () => {
                                         delete
                                     </span>
                                 )}
-                                <button onClick={() => updateShowEventModalAtom(false)}>
+                                <button
+                                    onClick={() =>
+                                        updateShowEventModalAtom(false)
+                                    }
+                                >
                                     <span className="material-icons-outlined text-gray-400">
                                         close
                                     </span>
@@ -107,7 +125,9 @@ const EventModal: React.FC = () => {
                                     autoFocus
                                     className="pt-3 border-0 text-gray-600 text-xl font-semibold pb-2 w-full 
                         border-b-2 border-gray-200 focus:outline-none focus:ring-0 focus:border-blue-500"
-                                    onChange={(e) => updateTitleAtom(e.target.value)}
+                                    onChange={(e) =>
+                                        updateTitleAtom(e.target.value)
+                                    }
                                     value={title}
                                 />
                                 <span className="material-icons-outlined text-gray-400">
@@ -124,7 +144,9 @@ const EventModal: React.FC = () => {
                                     required
                                     className="pt-3 border-0 text-gray-600 pb-2 w-full border-b-2 border-gray-200 
                         focus:outline-none focus:ring-0 focus:border-blue-500"
-                                    onChange={(e) => updateDescriptionAtom(e.target.value)}
+                                    onChange={(e) =>
+                                        updateDescriptionAtom(e.target.value)
+                                    }
                                     value={description}
                                 />
                                 <span className="material-icons-outlined text-gray-400">
@@ -134,7 +156,11 @@ const EventModal: React.FC = () => {
                                     {labelsClasses.map((lblClass, i) => (
                                         <span
                                             key={Guid.newGuid()}
-                                            onClick={() => updateSelectedLabelAtom(lblClass)}
+                                            onClick={() =>
+                                                updateSelectedLabelAtom(
+                                                    lblClass
+                                                )
+                                            }
                                             className={`bg-${lblClass}-500 w-6 h-6 rounded-full flex 
                             items-center justify-center cursor-pointer`}
                                         >
@@ -159,7 +185,7 @@ const EventModal: React.FC = () => {
                         </footer>
                     </form>
                 </div>
-            }
+            )}
         </>
     );
 };
