@@ -1,8 +1,13 @@
 import dayjs from 'dayjs';
-import React, { useContext, useState, useEffect } from 'react';
-import GlobalContext from '../context/GlobalContext';
+import React, { useEffect } from 'react';
 import { CalendarEvent } from '../utils';
 import { Guid } from 'guid-factory';
+import { Atom, swap, useAtom } from '@dbeining/react-atom';
+import { FilteredEventsAtom } from '../atoms/FilteredEventsAtom';
+import { updateShowEventModalAtom } from '../atoms/ShowEventModalAtom';
+import { updateSelectedEventAtom } from '../atoms/SelectedEventAtom';
+import { updateDaySelectedAtom } from '../atoms/DaySelectedAtom';
+//import { SavedEventsAtom } from '../atoms/SavedEventsAtom';
 
 interface DayProps {
     day: dayjs.Dayjs;
@@ -10,20 +15,23 @@ interface DayProps {
 }
 
 const Day: React.FC<DayProps> = ({ day, rowIdx }) => {
-    const {
-        setDaySelected,
-        setShowEventModal,
-        filteredEvents,
-        setSelectedEvent,
-    } = useContext(GlobalContext);
+    //const savedEvents = useAtom(SavedEventsAtom);
+    const filteredEvents = useAtom(FilteredEventsAtom);
 
-    const [dayEvents, setDayEvents] = useState<CalendarEvent[]>([]);
+    const DayEventsAtom = Atom.of<CalendarEvent[]>([]);
+    function updateDayEventsAtom(events: CalendarEvent[]) {
+        swap(DayEventsAtom, (prev) =>
+            prev = events
+        );
+    }
+    const dayEvents = useAtom(DayEventsAtom);
+
     useEffect(() => {
         const events = filteredEvents.filter(
             (evt: CalendarEvent) =>
                 dayjs(evt.day).format('DD-MM-YY') === day.format('DD-MM-YY')
         );
-        setDayEvents(events);
+        updateDayEventsAtom(events);
     }, [filteredEvents, day]);
 
     function getCurrentDayClass() {
@@ -31,6 +39,8 @@ const Day: React.FC<DayProps> = ({ day, rowIdx }) => {
             ? 'bg-blue-600 text-white rounded-full w-7'
             : '';
     }
+
+    console.log(`Day rendered ${day}`);
     return (
         <div className="border border-gray-200 flex flex-col">
             <header className="flex flex-col items-center">
@@ -48,14 +58,14 @@ const Day: React.FC<DayProps> = ({ day, rowIdx }) => {
             <div
                 className="flex-1 cursor-pointer"
                 onClick={() => {
-                    setDaySelected(day);
-                    setShowEventModal(true);
+                    updateDaySelectedAtom(day);
+                    updateShowEventModalAtom(true);
                 }}
             >
                 {dayEvents.map((evt: CalendarEvent, idx: number) => (
                     <div
-                        key={Guid.newGuid().toString()}
-                        onClick={() => setSelectedEvent(evt)}
+                        key={Guid.newGuid()}
+                        onClick={() => updateSelectedEventAtom(evt)}
                         className={`bg-${evt.label}-200 p-1 mr-3 text-gray-600 text-small rounded mb-1 truncate`}
                     >
                         {evt.title}

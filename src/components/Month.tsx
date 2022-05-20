@@ -8,12 +8,14 @@ interface MonthProps {
 }
 
 const Month: React.FC<MonthProps> = ({ month }: MonthProps) => {
+
+    console.log("Month rendered");
     return (
         <div className="flex-1 grid grid-cols-7 grid-rows-5">
             {month.map((row, i) => (
-                <React.Fragment key={Guid.newGuid().toString()}>
+                <React.Fragment key={Guid.newGuid()}>
                     {row.map((day, idx) => (
-                        <Day day={day} key={Guid.newGuid().toString()} rowIdx={i} />
+                        <Day day={day} key={Guid.newGuid()} rowIdx={i} />
                     ))}
                 </React.Fragment>
             ))}

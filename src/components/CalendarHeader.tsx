@@ -1,26 +1,27 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import logo from '../assets/logo.png';
-import GlobalContext from '../context/GlobalContext'
 import dayjs from 'dayjs';
+import { useAtom } from '@dbeining/react-atom';
+import { MonthIndexAtom, updateMonthIndexAtom } from '../atoms/MonthIndexAtom';
 
 const CalendarHeader: React.FC = () => {
-  const {monthIndex, setMonthIndex} = useContext(GlobalContext);
+  const monthIndex = useAtom(MonthIndexAtom);
 
   function handlePrevMonth() {
-    setMonthIndex(monthIndex - 1)
+    updateMonthIndexAtom(monthIndex - 1)
   }
 
   function handleNextMonth() {
-    setMonthIndex(monthIndex + 1)
+    updateMonthIndexAtom(monthIndex + 1)
   }
 
   function handleReset() {
-    setMonthIndex(monthIndex === dayjs().month() 
+    updateMonthIndexAtom(monthIndex === dayjs().month() 
       ? monthIndex + Math.random() 
       : dayjs().month()
     );
   }
-  
+  console.log("Calendar header rendered");
   return (
     <header className="px-4 py-2 flex items-center">
       <img src={logo} alt="calendar" className="mr-2 w-12 h-12" />

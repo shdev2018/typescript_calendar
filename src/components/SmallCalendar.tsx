@@ -1,29 +1,48 @@
 import dayjs from 'dayjs';
-import React, { useState, useEffect, useContext } from 'react';
-import GlobalContext from '../context/GlobalContext';
+import React, { useEffect } from 'react';
 import { getMonth } from '../utils';
 import { Guid } from 'guid-factory';
+import { Atom, swap, useAtom } from '@dbeining/react-atom';
+import { MonthIndexAtom } from '../atoms/MonthIndexAtom';
+import { updateSmallCalendarMonthAtom } from '../atoms/SmallCalendarMonthAtom';
+import { DaySelectedAtom, updateDaySelectedAtom } from '../atoms/DaySelectedAtom';
 
 const SmallCalendar: React.FC = () => {
-    const { monthIndex, setSmallCalendarMonth, setDaySelected, daySelected } =
-        useContext(GlobalContext);
+    const daySelected = useAtom(DaySelectedAtom);
+
+    const monthIndex = useAtom(MonthIndexAtom);
+
+    const CurrentMonthIdxAtom = Atom.of<number>(dayjs().month());
+    function updateCurrentMonthIdxAtom(idx: number) {
+        swap(CurrentMonthIdxAtom, (prev) =>
+            prev = idx
+        );
+    }
+    const currentMonthIdx = useAtom(CurrentMonthIdxAtom);
+
+    const CurrentMonthAtom = Atom.of<dayjs.Dayjs[][]>(getMonth());
+    function updateCurrentMonthAtom(month: dayjs.Dayjs[][]) {
+        swap(CurrentMonthAtom, (prev) =>
+            prev = month
+        );
+    }
+    const currentMonth = useAtom(CurrentMonthAtom);
+
+
     useEffect(() => {
-        setCurrentMonthIdx(monthIndex);
+        updateCurrentMonthIdxAtom(monthIndex);
     }, [monthIndex]);
 
-    const [currentMonthIdx, setCurrentMonthIdx] = useState(dayjs().month());
-
-    const [currentMonth, setCurrentMonth] = useState(getMonth());
     useEffect(() => {
-        setCurrentMonth(getMonth(currentMonthIdx));
+        updateCurrentMonthAtom(getMonth(currentMonthIdx));
     }, [currentMonthIdx]);
 
     function handlePrevMonth(): void {
-        setCurrentMonthIdx(currentMonthIdx - 1);
+        updateCurrentMonthIdxAtom(currentMonthIdx - 1);
     }
 
     function handleNextMonth(): void {
-        setCurrentMonthIdx(currentMonthIdx + 1);
+        updateCurrentMonthIdxAtom(currentMonthIdx + 1);
     }
     function getDayClass(day: dayjs.Dayjs): string {
         const format = 'DD-MM-YY';
@@ -35,6 +54,8 @@ const SmallCalendar: React.FC = () => {
             return 'bg-blue-100 rounded-full text-blue-600 font-bold';
         else return '';
     }
+    
+    console.log("Small calendar rendered");
     return (
         <div className="mt-9">
             <header className="flex justify-between">
@@ -67,14 +88,14 @@ const SmallCalendar: React.FC = () => {
                         </span>
                     ))}
                 {currentMonth.map((row, i) => (
-                    <React.Fragment key={Guid.newGuid().toString()}>
+                    <React.Fragment key={Guid.newGuid()}>
                         {row.map((day, i) => (
                             <button
-                                key={Guid.newGuid().toString()}
+                                key={Guid.newGuid()}
                                 className={`py-1 w-full ${getDayClass(day)}`}
                                 onClick={() => {
-                                    setSmallCalendarMonth(currentMonthIdx);
-                                    setDaySelected(day);
+                                    updateSmallCalendarMonthAtom(currentMonthIdx);
+                                    updateDaySelectedAtom(day);
                                 }}
                             >
                                 <span className="text-sm">
