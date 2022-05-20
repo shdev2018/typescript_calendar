@@ -15,23 +15,17 @@ const SmallCalendar: React.FC = () => {
 
     const monthIndex = useAtom(MonthIndexAtom);
 
-    // const CurrentMonthIdxAtom = Atom.of<number>(dayjs().month());
-
     const [currentMonthIdx, setCurrentMonthIdx] = useState(dayjs().month());
 
     function updateCurrentMonthIdxAtom(idx: number) {
         setCurrentMonthIdx(idx);
     }
-    //const currentMonthIdx = useAtom(CurrentMonthIdxAtom);
-
-    //const CurrentMonthAtom = Atom.of<dayjs.Dayjs[][]>(getMonth());
 
     const [currentMonth, setCurrentMonth] = useState(getMonth());
 
     function updateCurrentMonthAtom(month: dayjs.Dayjs[][]) {
         setCurrentMonth(month);
     }
-    //const currentMonth = useAtom(CurrentMonthAtom);
 
     useEffect(() => {
         updateCurrentMonthIdxAtom(monthIndex);
@@ -59,7 +53,7 @@ const SmallCalendar: React.FC = () => {
         else return '';
     }
 
-    console.log('Small calendar rendered');
+    //console.log('Small calendar rendered');
     return (
         <div className="mt-9">
             <header className="flex justify-between">

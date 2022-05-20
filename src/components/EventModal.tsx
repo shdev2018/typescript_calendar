@@ -6,7 +6,7 @@ import {
     ShowEventModalAtom,
     updateShowEventModalAtom,
 } from '../atoms/ShowEventModalAtom';
-import { Atom, swap, useAtom } from '@dbeining/react-atom';
+import { useAtom } from '@dbeining/react-atom';
 import { SelectedEventAtom } from '../atoms/SelectedEventAtom';
 import { DaySelectedAtom } from '../atoms/DaySelectedAtom';
 
@@ -17,8 +17,6 @@ const EventModal: React.FC = () => {
 
     const selectedEvent = useAtom(SelectedEventAtom);
     const daySelected = useAtom(DaySelectedAtom);
-
-    // const TitleAtom = Atom.of(selectedEvent ? selectedEvent.title : '');
 
     const [title, setTitle] = useState(
         selectedEvent ? selectedEvent.title : ''
@@ -34,21 +32,7 @@ const EventModal: React.FC = () => {
     function updateDescriptionAtom(description: string) {
         setDescription(description);
     }
-    // const title = useAtom(TitleAtom);
-    //
-    // const DescriptionAtom = Atom.of(
-    //     selectedEvent ? selectedEvent.description : ''
-    // );
-    // function updateDescriptionAtom(description: string) {
-    //     swap(DescriptionAtom, () => description);
-    // }
-    // const description = useAtom(DescriptionAtom);
 
-    // const SelectedLabelAtom = Atom.of(
-    //     selectedEvent
-    //         ? labelsClasses.find((lbl) => lbl === selectedEvent.label)
-    //         : labelsClasses[0]
-    // );
     const [selectedLabel, setSelectedLabel] = useState(
         selectedEvent
             ? labelsClasses.find((lbl) => lbl === selectedEvent.label)

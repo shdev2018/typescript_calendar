@@ -13,17 +13,12 @@ import { updateFilteredEvents } from './atoms/FilteredEventsAtom';
 
 const App: React.FC = () => {
     const monthIndex = useAtom(MonthIndexAtom);
-    //const [currentMonth, setCurrentMonth] = useState<Dayjs[][]>(getMonth());
 
     useEffect(() => {
         console.log('initial filling');
         updateLabels();
         updateFilteredEvents();
     }, []);
-
-    // useEffect(() => {
-    //     setCurrentMonth(getMonth(monthIndex));
-    // }, [monthIndex]);
 
     console.log('App rendered');
     return (

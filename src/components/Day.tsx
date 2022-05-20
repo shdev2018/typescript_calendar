@@ -15,16 +15,13 @@ interface DayProps {
 }
 
 const Day: React.FC<DayProps> = ({ day, rowIdx }) => {
-    //const savedEvents = useAtom(SavedEventsAtom);
     const filteredEvents = useAtom(FilteredEventsAtom);
 
-    //const DayEventsAtom = Atom.of<CalendarEvent[]>([]);
     const [dayEvents, setDayEvents] = useState<CalendarEvent[]>([]);
 
     function updateDayEventsAtom(events: CalendarEvent[]) {
         setDayEvents(events);
     }
-    //const dayEvents = useAtom(DayEventsAtom);
 
     useEffect(() => {
         const events = filteredEvents.filter(
@@ -40,7 +37,7 @@ const Day: React.FC<DayProps> = ({ day, rowIdx }) => {
             : '';
     }
 
-    console.log(`Day rendered ${day}`);
+    //console.log(`Day rendered ${day}`);
     return (
         <div className="border border-gray-200 flex flex-col">
             <header className="flex flex-col items-center">
